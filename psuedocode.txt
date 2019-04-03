@@ -1,0 +1,181 @@
+linkedList wizards;
+linkedList Spellbooks;
+
+main(fileName1, fileName2)
+{
+	if (verifyFiles(fileName1, fileName2) != true)
+		print "file(s) don't exist - exiting"
+		return 0;
+
+	//Assume files are in correct order?
+	if (parseFiles(filename1, fileName2) != true)
+		print "parsing failed = exiting"
+		return 0;
+
+	//At this point, we should have 2 lists of data, correctly parsed from the two files
+	//We can now start the loop
+
+
+	//Probably split loop into two separate function calls:
+	//why check to see if they are logged in each itteration? (should be easier to read)
+	int numberOfFailedOperations = 0;
+	bool loggedIn = false;
+	
+	do
+	{
+		//Make user log in
+		if loggedIn != true
+		{
+			loggedIn = AttemptLogin();
+			if (loggedIn != true)
+			{	
+				print "Invalid username or password"
+				numberOfFailedOperations++
+			}
+			else
+			{
+				//print welcome message
+				//either do this inside attempt login
+				//or i need to save a refernence to the current Wizard (probably this one)
+			}
+		}
+		else
+		{
+			AskOption()
+			switch(choice)
+			{
+				case 1:
+				case 2:
+				case 3:
+				case 4:
+				default:
+					numberOfFailedOperations++
+			}
+
+			//Only should move on to this step if the option was valid
+
+			AskDisplay()
+			switch(choice)
+			{
+				case 1:
+					print
+				case 2:
+					AttemptWriteData()
+				default:
+					numberOfFailedOperations++
+			}
+		}	
+	}
+	while(numberOfFailedOperations < 3)
+	
+	//Free up memory on exit
+}
+
+
+bool verifyFiles(file1, file2)
+{
+	//Check to see if these files actually exist
+	//Invalid file specific error message?
+	if file1 != exist
+		return false
+	if file2 != exist
+		return false
+	return true
+}
+
+
+bool parseFiles(wizardAccountFile, spellbookDataFile)
+{
+	//Assume files are in correct order?
+
+	try
+	{
+		//Split each file parse into separate function?
+
+		for(int i = 0; i < wizardAccountFile.Lines; i++) 
+		//Probably use a do while and wizardAccountFile.IsEndOfFile()
+		//or c++ equivalent
+		{
+			string line = wizardAccountFile.Lines[i];
+			string[] rawData = line.split(' ');
+			wizard temp = BuildWizardFromRawData(rawData);
+
+			if temp != null
+				wizards.Add(temp)
+			else
+				print "wizard account file corrupted"
+				return false;
+		}
+
+		//Same general process for spellbookDataFile
+	}
+	catch(Exception e)
+	{
+
+	}
+
+	//ensure files are closed
+	return true;
+}
+
+wizard BuildWizardFromRawData(string[] data)
+{
+	wizard newWizard;
+
+	newWizard.name = data[0];
+	newWizard.id = int.TryParse(data[1]);
+	newWizard.passwrod = data[2];
+	newWizard.position_title = data[3];
+	newWizard.beard_length = float.TryParse(data[4]);
+
+	//if id or beard_length fail; return null	
+}
+
+spellbook BuildSpellBookFromRawData(string[] data)
+{
+	spellbook newSpellbook;
+
+	try
+	{
+		newSpellbook.title
+		newSpellbook.author
+		newSpellbook.num_pages 
+		newSpellbook.edition
+		newSpellbook.num_spells
+		newSpellbook.avg_success_rate
+		newSpellbook.spells 
+	//Given the format of this file, best approach might be to create the spellbook in the loop
+	//and call the BuildSpellFromData from there, so we can just read the next newSpellbook.num_spells
+	//instead of having to pass that back to the parser.
+
+	}
+	catch()
+	{}
+}
+
+spell BuildSpellFromData(string[] data)
+{
+
+}
+
+bool AttemptLogin()
+{
+	string user = "";
+	string password = "";
+
+	print "Please enter your id:"
+	get user
+	print "Please enter your password:"
+	get password
+
+	bool correctUsername = false;
+	bool correctPassword = false;
+	
+	foreach (wizard wiz in wizards)
+	{
+		if (wiz.name == user && wiz.password == password)
+			return true;
+	}
+
+	return false;
+}
